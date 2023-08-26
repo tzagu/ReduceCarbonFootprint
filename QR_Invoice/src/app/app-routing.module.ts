@@ -7,7 +7,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'create-invoice', component: CreateInvoiceComponent },
-  { path: 'view-invoice', component: ViewInvoiceComponent },
+  { path: 'view-invoice/:id', component: ViewInvoiceComponent },
 ];
 
 @NgModule({

@@ -44,9 +44,12 @@
         </table>
         
         <!-- Generate QR code button bottom right corner -->
-        <button mat-fab color="primary" style="position: fixed; bottom: 20px; right: 20px;" (click)="generateQRCode()">
+        <button *ngIf="!isLoading" mat-fab color="primary" style="position: fixed; bottom: 20px; right: 20px;" (click)="generateQRCode()">
             <mat-icon>qr_code</mat-icon>
         </button>
+
+        <!-- Loading spinner -->
+        <mat-spinner *ngIf="isLoading" style="position: fixed; bottom: 20px; right: 20px;"></mat-spinner>
 
     </div>
   </div>

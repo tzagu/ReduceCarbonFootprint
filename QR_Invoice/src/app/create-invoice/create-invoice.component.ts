@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ServerService } from '../server.service';
+import { MatDialog } from '@angular/material/dialog';
+import { QrPopupComponent } from '../qr-popup/qr-popup.component';
 
 interface BuyingItem {
   name: string;
@@ -14,6 +16,9 @@ interface BuyingItem {
   styleUrls: ['./create-invoice.component.scss']
 })
 export class CreateInvoiceComponent {
+
+  isLoading = false;
+
   items: BuyingItem[] = [
     {
       name: 'Caffe Latte',
@@ -85,7 +90,7 @@ export class CreateInvoiceComponent {
 
   displayedColumns = ['item', 'units', 'total'];
 
-  constructor(public serverService: ServerService) { }
+  constructor(public serverService: ServerService, public dialog: MatDialog) { }
 
   getTotalCost() {
     return this.buyingItems.map(t => t.price * t.units).reduce((acc, value) => acc + value, 0);
@@ -103,11 +108,43 @@ export class CreateInvoiceComponent {
     this.dataSource.data = this.buyingItems;
   }
 
-  generateQRCode() { // send table data to the QR code generator
+  async generateQRCode() {
+    this.isLoading = true;
     const firestoreDoc = {
       items: this.buyingItems,
+    };
+    try {
+      const qrCodeURL = await this.serverService.addInvoice(firestoreDoc);
+      this.isLoading = false;
+  
+      this.dialog.open(QrPopupComponent, {
+        data: {
+          qrCode: qrCodeURL,
+        },
+      }).afterClosed().subscribe(() => {
+        this.buyingItems = [];
+        this.dataSource.data = [];
+      });
+    } catch (error) {
+      console.error('Error generating QR code:', error);
+      this.isLoading = false;
     }
-    this.serverService.addInvoice(firestoreDoc);
   }
-
+  
 }
+
+// this.serverService.addInvoice(firestoreDoc).then((res) => {
+//   this.isLoading = false;
+//   // open the QR code popup
+//   console.log("response received to create invoice to pass to popup", res);
+//   this.dialog.open(QrPopupComponent, {
+//     data: res
+//   })
+// }
+// ).catch((err) => {
+//   this.isLoading = false;
+//   console.log(err);
+// }
+// );
+
+// send the invoice to the server and get the QR code. Receiving an observable
