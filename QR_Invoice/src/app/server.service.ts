@@ -37,7 +37,7 @@ export class ServerService {
   }
 
   async generateQrCode(id: any) {
-    const url = `http://localhost:4200/view-invoice/${id.toString()}`;
+    const url = `https://tzagu.github.io/ReduceCarbonFootprint/view-invoice/${id.toString()}`;
     console.log('fetching qr code for url: ', url);
     const qr = this.http.get('https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + url, { responseType: 'blob' });
     return qr.toPromise(); // Convert Observable to Promise
