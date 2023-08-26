@@ -1,0 +1,52 @@
+<p>create-invoice works!</p>
+
+<div class="row">
+    <div class="column left">
+        <mat-grid-list cols="3" rowHeight="2:1">
+                <mat-grid-tile *ngFor="let item of items">
+                    <button mat-raised-button color="primary" style="padding: 30px; width: 300px; height: 100px;" (click)="addItem(item)">
+                        <div style="font-size: large;">
+                            {{item.name}}
+                        </div>
+                        <div style="font-size: large;">
+                            {{item.price}}
+                        </div>
+                    </button>
+                </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+    <div class="column right">
+        <table mat-table [dataSource]="dataSource">
+            <!-- Item Column -->
+            <ng-container matColumnDef="item">
+              <th mat-header-cell *matHeaderCellDef> Item </th>
+              <td mat-cell *matCellDef="let buyingItem"> {{buyingItem.name}} </td>
+              <td mat-footer-cell *matFooterCellDef> Total </td>
+            </ng-container>
+        
+            <!-- Qty Column -->
+            <ng-container matColumnDef="units">
+              <th mat-header-cell *matHeaderCellDef> Qty </th>
+              <td mat-cell *matCellDef="let buyingItem"> {{buyingItem.units}} </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
+            <!-- Total Column -->
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef> Total </th>
+                <td mat-cell *matCellDef="let buyingItem"> {{buyingItem.units*buyingItem.price | currency}} </td>
+                <td mat-footer-cell *matFooterCellDef> {{getTotalCost() | currency}} </td>
+              </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: false"></tr>
+        </table>
+        
+        <!-- Generate QR code button bottom right corner -->
+        <button mat-fab color="primary" style="position: fixed; bottom: 20px; right: 20px;" (click)="generateQRCode()">
+            <mat-icon>qr_code</mat-icon>
+        </button>
+
+    </div>
+  </div>
