@@ -1,33 +1,32 @@
-<!-- <p>view-invoice works!</p> -->
 
-<!-- display invoiceData -->
-<!-- <div>
-    {{invoiceData}}
-</div> -->
-
-<table mat-table [dataSource]="dataSource">
-    <!-- Item Column -->
-    <ng-container matColumnDef="item">
-      <th mat-header-cell *matHeaderCellDef> Item </th>
-      <td mat-cell *matCellDef="let buyingItem"> {{buyingItem.name}} </td>
-      <td mat-footer-cell *matFooterCellDef  style="font-weight: bold;"> Total </td>
-    </ng-container>
-
-    <!-- Qty Column -->
-    <ng-container matColumnDef="units">
-      <th mat-header-cell *matHeaderCellDef> Qty </th>
-      <td mat-cell *matCellDef="let buyingItem"> {{buyingItem.units}} </td>
-      <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-
-    <!-- Total Column -->
-    <ng-container matColumnDef="total">
-        <th mat-header-cell *matHeaderCellDef> Total </th>
-        <td mat-cell *matCellDef="let buyingItem"> {{buyingItem.units*buyingItem.price | currency}} </td>
-        <td mat-footer-cell *matFooterCellDef  style="font-weight: bold;"> {{getTotalCost() | currency}} </td>
+<div style="margin: 20px;">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" id="table">
+      <!-- Item Column -->
+      <ng-container matColumnDef="item">
+        <th mat-header-cell *matHeaderCellDef> Item </th>
+        <td mat-cell *matCellDef="let buyingItem"> {{buyingItem.name}} </td>
+        <td mat-footer-cell *matFooterCellDef  style="font-weight: bold;"> Total </td>
       </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: false"></tr>
-</table>
+  
+      <!-- Qty Column -->
+      <ng-container matColumnDef="units">
+        <th mat-header-cell *matHeaderCellDef> Qty </th>
+        <td mat-cell *matCellDef="let buyingItem"> {{buyingItem.units}} </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
+  
+      <!-- Total Column -->
+      <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef> Total </th>
+          <td mat-cell *matCellDef="let buyingItem"> {{buyingItem.units*buyingItem.price | currency}} </td>
+          <td mat-footer-cell *matFooterCellDef  style="font-weight: bold;"> {{getTotalCost() | currency}} </td>
+        </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: false"></tr>
+  </table>
+  <!-- download invoice button -->
+  <mat-spinner *ngIf="isLoading" style="position: fixed; bottom: 20px; right: 20px;"></mat-spinner>
+  <button *ngIf="!isLoading" mat-raised-button color="primary" (click)="downloadInvoice()" style="position: fixed; bottom: 20px; right: 20px;">Download Invoice</button>
+</div>

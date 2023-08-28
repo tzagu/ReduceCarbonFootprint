@@ -132,19 +132,3 @@ export class CreateInvoiceComponent {
   }
   
 }
-
-// this.serverService.addInvoice(firestoreDoc).then((res) => {
-//   this.isLoading = false;
-//   // open the QR code popup
-//   console.log("response received to create invoice to pass to popup", res);
-//   this.dialog.open(QrPopupComponent, {
-//     data: res
-//   })
-// }
-// ).catch((err) => {
-//   this.isLoading = false;
-//   console.log(err);
-// }
-// );
-
-// send the invoice to the server and get the QR code. Receiving an observable

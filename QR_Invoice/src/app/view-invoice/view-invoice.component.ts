@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ServerService } from '../server.service';
 import { MatTableDataSource } from '@angular/material/table';
+
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-view-invoice',
@@ -12,8 +15,7 @@ export class ViewInvoiceComponent implements OnInit{
   // invoiceId from params
   invoiceId: any;
   private sub: any;
-  // invoice data from server
-  // invoiceData: any;
+  isLoading = true;
 
   displayedColumns = ['item', 'units', 'total'];
 
@@ -36,6 +38,7 @@ export class ViewInvoiceComponent implements OnInit{
             total: item.price * item.units
           }
         });
+        this.isLoading = false;
       }
       );
     });
@@ -43,5 +46,12 @@ export class ViewInvoiceComponent implements OnInit{
 
   getTotalCost() {
     return  this.dataSource.data.map((t: any) => t.total).reduce((acc: any, value: any) => acc + value, 0);
+  }
+
+  downloadInvoice() {
+    console.log('download invoice');
+    const doc = new jsPDF();
+    autoTable(doc, { html: '#table' });
+    doc.save(this.invoiceId + '.pdf');
   }
 }
