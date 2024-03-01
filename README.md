@@ -1,1 +1,1 @@
-README inside dir
+README inside QR_Invoice dir
